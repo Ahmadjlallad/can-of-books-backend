@@ -19,10 +19,13 @@ db.once("open", () => console.log("connected to database"));
 
 app.get("/", async (req, res) => {
   // await seed(BooksModel);
+  res.send("Server Working correctly");
 });
 
 app.get("/books", getBooks);
 app.delete("/books/:id", deleteBooks);
 app.post("/books", createBooks);
 
-app.listen(PORT, () => console.log(`listening on ${PORT}`));
+app.listen(process.env.PORT, () =>
+  console.log(`listening on ${process.env.PORT}`)
+);
