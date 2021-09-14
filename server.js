@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 3001;
 const db = mongoose.connection;
 app.use(express.json());
 // * NOTE 1 - connect to mongoDB
-mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true });
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true });
 
 db.on("error", (err) => console.log(err, "connection error:"));
 db.once("open", () => console.log("connected to database"));
