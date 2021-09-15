@@ -6,7 +6,12 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const app = express();
-const { getBooks, deleteBooks, createBooks } = require("./RESTBooks");
+const {
+  getBooks,
+  deleteBooks,
+  createBooks,
+  updateBooks,
+} = require("./RESTBooks");
 app.use(cors());
 const PORT = process.env.PORT || 3001;
 const db = mongoose.connection;
@@ -17,7 +22,7 @@ mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true });
 db.on("error", (err) => console.log(err, "connection error:"));
 db.once("open", () => console.log("connected to database"));
 
-app.get("/", async (req, res) => {
+app.get("/", (req, res) => {
   // await seed(BooksModel);
   res.send("Server Working correctly");
 });
@@ -25,6 +30,7 @@ app.get("/", async (req, res) => {
 app.get("/books", getBooks);
 app.delete("/books/:id", deleteBooks);
 app.post("/books", createBooks);
+app.put("/books/:id", updateBooks);
 
 app.listen(process.env.PORT, () =>
   console.log(`listening on ${process.env.PORT}`)
