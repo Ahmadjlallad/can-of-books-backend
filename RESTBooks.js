@@ -1,3 +1,4 @@
+"use strict";
 const Books = require("./Mongo/BooksModel");
 
 const getBooks = async (request, response) => {
@@ -13,12 +14,13 @@ const deleteBooks = async (request, response) => {
   try {
     const deleted = await Books.deleteOne({ _id: request.params.id });
     response.json(deleted);
-  } catch (err) {}
+  } catch (err) {
+    response.status(300).send(err);
+  }
 };
 
 const createBooks = async (request, response) => {
   const { email, title, status, description } = request.body;
-
   try {
     const addBook = await Books.create({
       email,
@@ -31,5 +33,19 @@ const createBooks = async (request, response) => {
     response.status(400).json(err);
   }
 };
+const updateBooks = async (request, response) => {
+  const { title, status, description } = request.body;
+  try {
+    const updatedBook = await Books.findByIdAndUpdate(request.params.id, {
+      title,
+      status,
+      description,
+    });
+    const { email } = updatedBook;
+    getBooks({ query: { email } }, response);
+  } catch (err) {
+    response.status(400).json(err);
+  }
+};
 
-module.exports = { getBooks, deleteBooks, createBooks };
+module.exports = { getBooks, deleteBooks, createBooks, updateBooks };
